@@ -1,9 +1,17 @@
-# Use official Python image as base
-FROM python:3.11-slim
+# Step 1: Use an official Python base image
+FROM python:3.9-slim
 
-# Copy your app into container
+# Step 2: Set working directory
 WORKDIR /app
-COPY app.py .
 
-# Run the Python file
-CMD ["python", "app.py"]
+# Step 3: Copy app code into container
+COPY . .
+
+# Step 4: Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Step 5: Expose Flask default port
+EXPOSE 5000
+
+# Step 6: Run the Flask app
+CMD ["python3", "app.py"]

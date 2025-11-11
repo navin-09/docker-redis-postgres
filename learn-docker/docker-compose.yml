@@ -1,13 +1,12 @@
-version: "3.8"
 services:
-  postgres:
-    image: postgres:15
+  web:
+    build: .
     environment:
-      POSTGRES_PASSWORD: postgres
+      - REDIS_HOST=redis
     ports:
-      - "5432:5432"
+      - "5001:5001"
+    depends_on:
+      - redis
 
   redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
+    image: redis:latest

@@ -1,16 +1,18 @@
-import os
-import redis
 from flask import Flask
+import redis, os
 
 app = Flask(__name__)
 
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")   # default to `redis`
-r = redis.Redis(host=REDIS_HOST, port=6379)
+redis_host = os.getenv("REDIS_HOST", "localhost")
+redis_port = int(os.getenv("REDIS_PORT", 6379))
+
+r = redis.Redis(host=redis_host, port=redis_port)
 
 @app.route('/')
 def home():
     count = r.incr('hits')
-    return f"🔁 This page has been visited {count} times!"
+    return f"🔁 Connected to Redis at {redis_host}:{redis_port} — Page visited {count} times!"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
+
